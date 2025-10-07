@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Calendario</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        background: url("dino1.jpeg") no-repeat center center fixed;
+        background-size: contain; /* mostra tutto il dinosauro */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: #1c1c1c; /* colore dietro se ci sono bordi */
+        animation: appearZoom 2s ease-out forwards;
+        text-align: center;
+        padding: 20px;
+        color: white;
+      }
+
+      @keyframes appearZoom {
+        0% {
+          opacity: 0;
+          transform: scale(1.1);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      #monthName {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+        color: white;
+        text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+      }
+
+      #calendar {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 10px;
+        max-width: 700px;
+        margin: 0 auto;
+        background: rgba(0, 0, 0, 0.4); /* leggero velo dietro i giorni */
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      .day {
+        background-color: rgba(255, 255, 255, 0.85);
+        border-radius: 10px;
+        padding: 20px 5px;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        position: relative;
+        transition: all 0.2s ease-in-out;
+      }
+
+      .day:hover {
+        background-color: rgba(187, 222, 251, 0.9);
+        transform: scale(1.03);
+      }
+
+      .event {
+        font-size: 0.75rem;
+        color: #333;
+        margin-top: 5px;
+      }
+
+      .back-button {
+        margin-top: 30px;
+        padding: 10px 20px;
+        font-size: 1rem;
+        background-color: rgba(57, 57, 95, 0.8);
+        border: none;
+        border-radius: 10px;
+        color: white;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+      }
+
+      .back-button:hover {
+        background-color: rgba(53, 53, 104, 0.9);
+        transform: scale(1.05);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>📅 Calendario</h1>
+    <div id="monthName"></div>
+    <div id="calendar"></div>
+
+    <button class="back-button" onclick="window.location.href='index.html'">
+      🏠 Torna alla home
+    </button>
+
+    <script>
+      const calendarEl = document.getElementById("calendar");
+      const monthNameEl = document.getElementById("monthName");
+      const today = new Date();
+      const currentYear = today.getFullYear();
+      const currentMonth = today.getMonth();
+
+      const monthNames = [
+        "Gennaio",
+        "Febbraio",
+        "Marzo",
+        "Aprile",
+        "Maggio",
+        "Giugno",
+        "Luglio",
+        "Agosto",
+        "Settembre",
+        "Ottobre",
+        "Novembre",
+        "Dicembre",
+      ];
+
+      function loadCalendar(year, month) {
+        calendarEl.innerHTML = "";
+        monthNameEl.textContent = `${monthNames[month]} ${year}`;
+
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        for (let i = 0; i < (firstDay === 0 ? 6 : firstDay - 1); i++) {
+          const empty = document.createElement("div");
+          calendarEl.appendChild(empty);
+        }
+
+        for (let day = 1; day <= daysInMonth; day++) {
+          const div = document.createElement("div");
+          div.className = "day";
+          div.textContent = day;
+
+          const key = `${year}-${month + 1}-${day}`;
+          const saved = localStorage.getItem(key);
+          if (saved) {
+            const eventEl = document.createElement("div");
+            eventEl.className = "event";
+            eventEl.textContent = saved;
+            div.appendChild(eventEl);
+          }
+
+          div.onclick = () => {
+            const event = prompt(
+              `Aggiungi un evento per il ${day}/${month + 1}/${year}:`,
+              saved || ""
+            );
+            if (event !== null) {
+              if (event.trim() === "") {
+                localStorage.removeItem(key);
+              } else {
+                localStorage.setItem(key, event);
+              }
+              loadCalendar(year, month);
+            }
+          };
+
+          calendarEl.appendChild(div);
+        }
+      }
+
+      loadCalendar(currentYear, currentMonth);
+    </script>
+  </body>
+</html>

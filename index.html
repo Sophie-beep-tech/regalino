@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Super organizzazione!</title>
+    <style>
+      body {
+        background: url("dino.jpeg") no-repeat center center fixed;
+        background-size: contain; /* adatta tutto il dinosauro */
+        background-position: center; /* lo tiene centrato */
+        background-repeat: no-repeat;
+        background-color: #1c1c1c; /* colore dietro, se restano bordi vuoti */
+        animation: appearZoom 2s ease-out forwards;
+        font-family: sans-serif;
+        text-align: center;
+        padding: 40px;
+        color: white;
+      }
+
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        padding: 20px;
+        gap: 20px;
+      }
+
+      .card {
+        width: 200px;
+        height: 200px;
+        background-color: rgba(57, 57, 95, 0.8); /* leggermente trasparente */
+        border-radius: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.2rem;
+        font-weight: bold;
+        text-align: center;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        transition: all 0.2s ease-in-out;
+        color: white;
+      }
+
+      .card:hover {
+        transform: scale(1.05);
+        background-color: rgba(53, 53, 104, 0.9);
+      }
+
+      @keyframes appearZoom {
+        0% {
+          opacity: 0;
+          transform: scale(1.1);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Super organizzazione carinissima :--)!!!</h1>
+
+    <div class="container">
+      <div class="card" onclick="goTo('calendar')">Calendario</div>
+      <div class="card" onclick="goTo('todo')">To Do Oggi</div>
+      <div class="card" onclick="goTo('pomodoro')">Pomodoro Timer</div>
+      <div class="card" onclick="goTo('goals')">Propositi del Mese</div>
+    </div>
+
+    <script>
+      function goTo(section) {
+        window.location.href = section + ".html";
+      }
+    </script>
+  </body>
+</html>

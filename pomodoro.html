@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pomodoro Timer</title>
+    <style>
+      body {
+        background: url("dino3.jpeg") no-repeat center center fixed;
+        background-size: contain; /* mostra tutto il dinosauro */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: #1c1c1c; /* colore dietro se ci sono bordi */
+        animation: appearZoom 2s ease-out forwards;
+        font-family: sans-serif;
+        text-align: center;
+        padding: 40px;
+        color: white;
+      }
+
+      @keyframes appearZoom {
+        0% {
+          opacity: 0;
+          transform: scale(1.1);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        text-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
+      }
+
+      #timer {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        background: rgba(0, 0, 0, 0.4);
+        display: inline-block;
+        padding: 20px 40px;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      button {
+        padding: 10px 20px;
+        font-size: 1rem;
+        margin: 5px;
+        cursor: pointer;
+        border: none;
+        border-radius: 10px;
+        background-color: rgba(57, 57, 95, 0.8);
+        color: white;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        transition: all 0.2s ease-in-out;
+      }
+
+      button:hover {
+        background-color: rgba(53, 53, 104, 0.9);
+        transform: scale(1.05);
+      }
+
+      .back-button {
+        margin-top: 30px;
+        font-size: 1rem;
+        background-color: rgba(57, 57, 95, 0.8);
+      }
+
+      .back-button:hover {
+        background-color: rgba(53, 53, 104, 0.9);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>⏱️ Pomodoro Timer</h1>
+    <div id="timer">25:00</div>
+    <br />
+    <button onclick="startTimer()">▶️ Start</button>
+    <button onclick="pauseTimer()">⏸️ Pausa</button>
+    <button onclick="resetTimer()">🔄 Reset</button>
+    <br />
+    <button class="back-button" onclick="window.location.href='index.html'">
+      🏠 Torna alla home
+    </button>
+    <audio
+      id="beep"
+      src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"
+      preload="auto"
+    ></audio>
+
+    <script>
+      let duration = 25 * 60;
+      let timeLeft = duration;
+      let timerInterval = null;
+      let isRunning = false;
+
+      const timerEl = document.getElementById("timer");
+      const beep = document.getElementById("beep");
+
+      function updateDisplay() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        timerEl.textContent = `${String(minutes).padStart(2, "0")}:${String(
+          seconds
+        ).padStart(2, "0")}`;
+      }
+
+      function startTimer() {
+        if (isRunning) return;
+        isRunning = true;
+        timerInterval = setInterval(() => {
+          if (timeLeft > 0) {
+            timeLeft--;
+            updateDisplay();
+          } else {
+            clearInterval(timerInterval);
+            isRunning = false;
+            beep.play();
+            alert("Tempo scaduto! Prenditi una pausa ☕");
+          }
+        }, 1000);
+      }
+
+      function pauseTimer() {
+        clearInterval(timerInterval);
+        isRunning = false;
+      }
+
+      function resetTimer() {
+        pauseTimer();
+        timeLeft = duration;
+        updateDisplay();
+      }
+
+      updateDisplay();
+    </script>
+  </body>
+</html>
