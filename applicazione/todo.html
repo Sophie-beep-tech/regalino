@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>To Do Oggi</title>
+    <style>
+      body {
+        background: url("dino4.jpeg") no-repeat center center fixed;
+        background-size: contain; /* mostra tutto il dinosauro */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: #1c1c1c; /* colore dietro se ci sono bordi */
+        animation: appearZoom 2s ease-out forwards;
+        font-family: sans-serif;
+        text-align: center;
+        padding: 40px;
+        color: white;
+      }
+
+      @keyframes appearZoom {
+        0% {
+          opacity: 0;
+          transform: scale(1.1);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      h1 {
+        text-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+      }
+
+      input[type="text"] {
+        padding: 10px;
+        width: 60%;
+        font-size: 1rem;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        border: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      }
+
+      button {
+        padding: 10px 15px;
+        font-size: 1rem;
+        cursor: pointer;
+        border: none;
+        border-radius: 10px;
+        background-color: rgba(57, 57, 95, 0.8);
+        color: white;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        transition: all 0.2s ease-in-out;
+      }
+
+      button:hover {
+        background-color: rgba(53, 53, 104, 0.9);
+        transform: scale(1.05);
+      }
+
+      ul {
+        list-style-type: none;
+        padding: 0;
+        margin-top: 20px;
+      }
+
+      li {
+        background-color: rgba(255, 255, 255, 0.85);
+        color: #333;
+        margin: 8px auto;
+        padding: 10px;
+        width: 70%;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: all 0.2s ease-in-out;
+      }
+
+      li:hover {
+        transform: scale(1.02);
+      }
+
+      .completed {
+        text-decoration: line-through;
+        color: gray;
+      }
+
+      .back-button {
+        margin-top: 30px;
+        padding: 10px 20px;
+        font-size: 1rem;
+        background-color: rgba(57, 57, 95, 0.8);
+        border: none;
+        border-radius: 10px;
+        color: white;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+      }
+
+      .back-button:hover {
+        background-color: rgba(53, 53, 104, 0.9);
+        transform: scale(1.05);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>📝 To Do di Oggi</h1>
+    <input
+      type="text"
+      id="taskInput"
+      placeholder="Scrivi un nuovo compito..."
+    />
+    <button id="addButton">➕ Aggiungi</button>
+
+    <ul id="taskList"></ul>
+
+    <button class="back-button" onclick="window.location.href='index.html'">
+      🏠 Torna alla home
+    </button>
+
+    <script>
+      const input = document.getElementById("taskInput");
+      const button = document.getElementById("addButton");
+      const list = document.getElementById("taskList");
+
+      function addTask() {
+        const text = input.value.trim();
+        if (text !== "") {
+          const li = document.createElement("li");
+          li.textContent = text;
+          li.addEventListener("click", () => {
+            li.classList.toggle("completed");
+          });
+          list.appendChild(li);
+          input.value = "";
+        }
+      }
+
+      button.addEventListener("click", addTask);
+
+      // pressione tasto Enter
+      input.addEventListener("keypress", (event) => {
+        if (event.key === "Enter") {
+          addTask();
+        }
+      });
+    </script>
+  </body>
+</html>

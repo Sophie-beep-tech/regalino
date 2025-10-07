@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Propositi del Mese</title>
+    <style>
+      body {
+        background: url("dino2.jpeg") no-repeat center center fixed;
+        background-size: contain; /* mostra tutto il dinosauro */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: #1c1c1c; /* colore di sfondo se restano bordi */
+        animation: appearZoom 2s ease-out forwards;
+        font-family: sans-serif;
+        text-align: center;
+        padding: 40px;
+        color: white;
+      }
+
+      @keyframes appearZoom {
+        0% {
+          opacity: 0;
+          transform: scale(1.1);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      h1 {
+        text-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+      }
+
+      input[type="text"] {
+        padding: 10px;
+        width: 60%;
+        font-size: 1rem;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        border: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      }
+
+      button {
+        padding: 10px 15px;
+        font-size: 1rem;
+        cursor: pointer;
+        border: none;
+        border-radius: 10px;
+        background-color: rgba(57, 57, 95, 0.8);
+        color: white;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        transition: all 0.2s ease-in-out;
+      }
+
+      button:hover {
+        background-color: rgba(53, 53, 104, 0.9);
+        transform: scale(1.05);
+      }
+
+      ul {
+        list-style-type: none;
+        padding: 0;
+        margin-top: 20px;
+      }
+
+      li {
+        background-color: rgba(255, 255, 255, 0.85);
+        color: #333;
+        margin: 8px auto;
+        padding: 10px;
+        width: 70%;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: all 0.2s ease-in-out;
+      }
+
+      li:hover {
+        transform: scale(1.02);
+      }
+
+      .completed {
+        text-decoration: line-through;
+        color: gray;
+      }
+
+      .back-button {
+        margin-top: 30px;
+        padding: 10px 20px;
+        font-size: 1rem;
+        background-color: rgba(57, 57, 95, 0.8);
+        border: none;
+        border-radius: 10px;
+        color: white;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+      }
+
+      .back-button:hover {
+        background-color: rgba(53, 53, 104, 0.9);
+        transform: scale(1.05);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🌟 Propositi del Mese</h1>
+
+    <input
+      type="text"
+      id="goalInput"
+      placeholder="Scrivi un nuovo proposito..."
+    />
+    <button onclick="addGoal()">➕ Aggiungi</button>
+
+    <ul id="goalList"></ul>
+
+    <button class="back-button" onclick="window.location.href='index.html'">
+      🏠 Torna alla home
+    </button>
+
+    <script>
+      let goalList = [];
+
+      window.onload = function () {
+        const saved = localStorage.getItem("monthlyGoals");
+        if (saved) {
+          goalList = JSON.parse(saved);
+          displayGoals();
+        }
+      };
+
+      function addGoal() {
+        const input = document.getElementById("goalInput");
+        const text = input.value.trim();
+        if (text === "") return;
+
+        const newGoal = { text: text, completed: false };
+        goalList.push(newGoal);
+        saveGoals();
+        displayGoals();
+        input.value = "";
+      }
+
+      function toggleGoal(index) {
+        goalList[index].completed = !goalList[index].completed;
+        saveGoals();
+        displayGoals();
+      }
+
+      function saveGoals() {
+        localStorage.setItem("monthlyGoals", JSON.stringify(goalList));
+      }
+
+      function displayGoals() {
+        const ul = document.getElementById("goalList");
+        ul.innerHTML = "";
+        goalList.forEach((goal, index) => {
+          const li = document.createElement("li");
+          const span = document.createElement("span");
+          span.textContent = goal.text;
+          if (goal.completed) span.classList.add("completed");
+          span.addEventListener("click", () => toggleGoal(index));
+          li.appendChild(span);
+          ul.appendChild(li);
+        });
+      }
+
+      document
+        .getElementById("goalInput")
+        .addEventListener("keypress", (event) => {
+          if (event.key === "Enter") {
+            addGoal();
+          }
+        });
+    </script>
+  </body>
+</html>
